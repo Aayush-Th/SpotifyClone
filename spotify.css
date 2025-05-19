@@ -98,7 +98,7 @@ body{
    border-radius: 5px;
    background-color: #252525;
    position:relative;
-
+   
 }
 .card > *{
     padding-top: 6px;
@@ -173,30 +173,70 @@ body{
 
 .playbar{
     position: absolute;
-    bottom: 0;
-    background-color: rgb(139,193,139);
-    width: 92%;
+    bottom: 15px;
+    background-color: rgb(37, 41, 37);
+    width: 68%;
     padding: 12px;
+    position: fixed;
+    border-radius: 5px;
 }
 
 .songbtn{
     display: flex;
     justify-content: center;
     gap: 12px;
+    filter: invert(1);
+    cursor: pointer;
+}
+
+.songlist{
+    height: 480px;
+    overflow: auto;
 }
 
 .songlist ul{
-  padding: 16px;
+  padding: 0 12px;
+
 }
 
 .songlist ul li{
    list-style-type: decimal;
    display: flex;
-   gap: 34px;
+   gap: 12px;
    cursor: pointer;
    padding: 12px 0;
    border: 1px solid white;
-   margin: 12px;
+   margin: 12px 0;
    padding: 13px;
    border-radius: 5px;
+   justify-content: space-between;
+}
+.playnow{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.playnow span{
+    font-size: 15px;
+    width: 64px;
+    padding: 2px;
+}
+
+.seekbar{
+    width: 98%;
+    height: 4px;
+    background-color: white;
+    border-radius: 2px;
+    position: absolute;
+    bottom: 0;
+}
+.circle{
+    width: 13px;
+    height: 13px;
+    border-radius: 13px;
+    background-color: rgb(219, 37, 37);
+    position: relative;
+    bottom: 6px;
+    left: 0%;
+    transition: left 0.5s;
 }
