@@ -40,6 +40,27 @@ const playMusic = (track) => {
   document.querySelector(".songtime").innerHTML = "00:00 / 00:00";
 };
 
+async function displayAlbums(){
+  console.log("displaying albums")
+  let a = await fetch(`/music/`)
+  let response = await a.text();
+  let div = document.createElement("div")
+  div.innerHTML = response;
+  let anchors = div.getElementsByTagName("a")
+  let cardContainer = document.querySelector(".cardContainer")
+  let array = Arrays.from(anchors)
+  for(let index = 0; index < array.length; index++){
+    const e = array[index];
+    if(e.href.includes("/music") && !e.href.includes(".htaccess")){
+      let folder = e.href.split("/").slice(-2)[0]
+      // get the metadata of the folder
+      let a = await fetch(`/music/${folder}/info.json`)
+      let response = await a.json();
+      cardContainer.innerHTML = cardContainer.innerHTML + `<div data-folder = "${folder}" class="card">`
+    }
+  }
+}
+
 async function main() {
   songs = await getSongs("/music/");
   console.log(songs);
@@ -123,9 +144,31 @@ async function main() {
     }
   });
 
-  document.querySelector(".range input").addEventListener("change", (e) => {
-    currentSong.volume = parseInt(e.target.value) / 100;
-  });
+  let lastVolume = 0.5;
+
+  document.querySelector(".range").getElementsByTagName("input")[0].addEventListener("change",(e) =>{
+    console.log("setting volume to",e.target.value,"/100")
+    currentSong.volume = parseInt(e.target.value)/100
+    if(currentSong.volume > 0){
+      document.querySelector(".volume>img").src = document.querySelector(".volume>img").src.replace("mute.svg","volume.svg")
+    }
+  })
+
+
+  document.querySelector(".volume>img").addEventListener("click",e =>{
+    if(e.target.src.includes("volume.svg")){
+      e.target.src = e.target.src.replace("volume.svg","mute.svg")
+      lastVolume = currentSong.volume;
+      currentSong.volume = 0;
+      document.querySelector(".range").getElementsByTagName("input")[0].value = 0;
+    }else{
+      e.target.src = e.target.src.replace("mute.svg","volume.svg")
+      currentSong.volume = lastVolume;
+      document.querySelector(".range").getElementsByTagName("input")[0].value =lastVolume * 100;
+    }
+  })
+
+
 }
 
 main();
